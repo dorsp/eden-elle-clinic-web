@@ -2,6 +2,7 @@ import { Button } from "@/components/button";
 import { ImagePanel } from "@/components/image-panel";
 import { SectionHeading } from "@/components/section-heading";
 import { TreatmentCard } from "@/components/treatment-card";
+import { TrustMarquee } from "@/components/trust-marquee";
 import { branches } from "@/data/locations";
 import { featuredTreatments } from "@/data/treatments";
 
@@ -75,6 +76,8 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <TrustMarquee />
 
       <section className="quote-band dark-band">
         <blockquote>
