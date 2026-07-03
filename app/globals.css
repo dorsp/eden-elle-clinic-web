@@ -1372,32 +1372,396 @@ select {
   text-transform: uppercase;
 }
 
+/* ============================================================
+   Motion & interactivity layer (additive)
+   ============================================================ */
+
+/* Living image panels — a slow sheen sweep so placeholders feel alive */
+.image-panel__sheen {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    115deg,
+    transparent 34%,
+    rgba(255, 255, 255, 0.42) 50%,
+    transparent 66%
+  );
+  mix-blend-mode: soft-light;
+  transform: translateX(-70%);
+  animation: sheen-sweep 9s ease-in-out infinite;
+}
+
+@keyframes sheen-sweep {
+  0%,
+  100% {
+    transform: translateX(-72%);
+  }
+  50% {
+    transform: translateX(72%);
+  }
+}
+
+/* stagger each panel so they don't pulse in unison */
+.treatment-card:nth-child(2n) .image-panel__sheen {
+  animation-delay: -3s;
+}
+.treatment-card:nth-child(3n) .image-panel__sheen,
+.location-card:nth-child(2n) .image-panel__sheen {
+  animation-delay: -6s;
+}
+
+/* Buttons — light-sweep sheen + crisp press + arrow nudge */
+.button {
+  position: relative;
+  overflow: hidden;
+  will-change: transform;
+}
+
+.button::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -130%;
+  height: 100%;
+  width: 55%;
+  background: linear-gradient(
+    115deg,
+    transparent,
+    rgba(255, 255, 255, 0.38),
+    transparent
+  );
+  transform: skewX(-18deg);
+  transition: left 0.6s ease;
+  pointer-events: none;
+}
+
+.button:hover::after {
+  left: 135%;
+}
+
+.button:active {
+  transform: translateY(1px) scale(0.985);
+}
+
+.button > *,
+.button span {
+  position: relative;
+  z-index: 1;
+}
+
+.button svg,
+.catalog-book-link svg,
+.catalog-service-card__meta a svg,
+.text-link {
+  transition:
+    transform 0.25s ease,
+    color 0.2s ease;
+}
+
+.button:hover svg,
+.catalog-book-link:hover svg,
+.catalog-service-card__meta a:hover svg {
+  transform: translateX(3px);
+}
+
+.text-link:hover {
+  transform: translateX(2px);
+}
+
+/* Cards — cursor-following champagne spotlight */
+.treatment-card::after,
+.location-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  border-radius: inherit;
+  opacity: 0;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+  transition: opacity 0.35s ease;
+  background: radial-gradient(
+    16rem circle at var(--mx, 50%) var(--my, 50%),
+    color-mix(in srgb, var(--champagne) 24%, transparent),
+    transparent 60%
+  );
+}
+
+.treatment-card:hover::after,
+.location-card:hover::after {
+  opacity: 1;
+}
+
+.treatment-card > *,
+.location-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Gentle image zoom on card hover */
+.treatment-card .image-panel,
+.location-card .image-panel {
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.treatment-card:hover .image-panel,
+.location-card:hover .image-panel {
+  transform: scale(1.045);
+}
+
+/* Section eyebrow — champagne underline that draws in on scroll */
+.section-heading .micro-label {
+  position: relative;
+  display: inline-block;
+  padding-bottom: 0.6rem;
+}
+
+.section-heading .micro-label::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 2.25rem;
+  height: 1px;
+  background: var(--champagne);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.section-heading--center .micro-label::after {
+  left: 50%;
+  transform: translateX(-50%) scaleX(0);
+}
+
+.section-heading.is-revealed .micro-label::after {
+  transform: scaleX(1);
+}
+
+.section-heading--center.is-revealed .micro-label::after {
+  transform: translateX(-50%) scaleX(1);
+}
+
+/* Quote band — word-by-word reveal */
+.quote-band blockquote .word {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+
+/* Trust marquee — continuous calm movement */
+.marquee {
+  overflow: hidden;
+  border-block: 1px solid var(--line);
+  background: var(--cloud);
+  padding-block: 1.15rem;
+}
+
+.marquee__track {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll 34s linear infinite;
+}
+
+.marquee:hover .marquee__track {
+  animation-play-state: paused;
+}
+
+.marquee__item {
+  display: inline-flex;
+  align-items: center;
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 400;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.marquee__item::after {
+  content: "\2022";
+  color: var(--champagne);
+  padding-inline: 2.5rem;
+}
+
+@keyframes marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* Living, scroll-aware header */
+.site-header {
+  transition:
+    transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 0.3s ease,
+    box-shadow 0.35s ease;
+}
+
+.site-header[data-scrolled="true"] {
+  background: rgba(247, 244, 239, 0.94);
+  box-shadow: 0 14px 40px rgba(26, 23, 20, 0.07);
+}
+
+.site-header[data-hidden="true"] {
+  transform: translateY(-100%);
+}
+
+.site-header__nav a {
+  position: relative;
+  padding-bottom: 0.25rem;
+}
+
+.site-header__nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 1px;
+  background: var(--champagne);
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.site-header__nav a:hover::after,
+.site-header__nav a[data-active="true"]::after {
+  transform: scaleX(1);
+}
+
+.site-header__nav a[data-active="true"] {
+  color: var(--champagne);
+}
+
+/* Mobile menu */
+.site-header__toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.mobile-menu {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1.75rem;
+  padding: var(--page-x);
+  background: rgba(247, 244, 239, 0.98);
+  backdrop-filter: blur(14px);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-1.25rem);
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    visibility 0.4s;
+}
+
+.mobile-menu[data-open="true"] {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.mobile-menu a {
+  font-family: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
+  font-size: clamp(2.25rem, 9vw, 3.25rem);
+  line-height: 1;
+  color: var(--ink);
+  opacity: 0;
+  transform: translateY(0.75rem);
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease;
+}
+
+.mobile-menu[data-open="true"] a {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.mobile-menu[data-open="true"] a:nth-child(1) {
+  transition-delay: 0.08s;
+}
+.mobile-menu[data-open="true"] a:nth-child(2) {
+  transition-delay: 0.14s;
+}
+.mobile-menu[data-open="true"] a:nth-child(3) {
+  transition-delay: 0.2s;
+}
+.mobile-menu[data-open="true"] a:nth-child(4) {
+  transition-delay: 0.26s;
+}
+.mobile-menu[data-open="true"] a:nth-child(5) {
+  transition-delay: 0.32s;
+}
+
+.mobile-menu__close {
+  position: absolute;
+  top: 1.5rem;
+  right: var(--page-x);
+  width: 2.75rem;
+  height: 2.75rem;
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .image-panel__sheen,
+  .marquee__track {
+    animation: none !important;
+  }
+  .site-header[data-hidden="true"] {
+    transform: none;
+  }
+}
+
 @media (max-width: 760px) {
   :root {
     --page-x: 1rem;
   }
 
-  .body-copy {
-    font-size: 0.95rem;
+  .site-header__nav {
+    display: none;
   }
 
   .site-header {
-    grid-template-columns: 1fr;
-    justify-items: center;
-    position: relative;
+    grid-template-columns: auto 1fr auto;
+    justify-items: stretch;
+    position: sticky;
   }
 
   .site-header__logo {
-    grid-row: 1;
+    grid-column: 2;
+    justify-self: center;
   }
 
-  .site-header__nav {
-    justify-content: center;
-    width: 100%;
+  .site-header__toggle {
+    display: inline-flex;
+    grid-column: 3;
+    justify-self: end;
   }
 
-  .site-header__nav--right {
-    justify-content: center;
+  .body-copy {
+    font-size: 0.95rem;
   }
 
   .hero,
@@ -1466,5 +1830,109 @@ select {
 
   .catalog-stage__media .image-panel {
     min-height: 22rem;
+  }
+}
+
+/* ============================================================
+   Tablet range — close the gap between the phone breakpoint
+   and the full desktop layout (761px–1024px)
+   ============================================================ */
+@media (min-width: 761px) and (max-width: 1024px) {
+  .treatment-grid,
+  .category-grid,
+  .catalog__grid,
+  .catalog-service-stage {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  /* Stack the interactive catalog stage and detail sidebar so nothing
+     gets squeezed into unreadable columns on tablets. */
+  .catalog-stage,
+  .treatment-detail-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .booking-sidebar {
+    position: static;
+  }
+
+  .catalog-stage__media .image-panel {
+    min-height: 24rem;
+  }
+}
+
+/* ============================================================
+   Phone refinements (layered on top of the base 760px block)
+   ============================================================ */
+@media (max-width: 760px) {
+  /* Stop any stray element from forcing horizontal scroll */
+  body {
+    overflow-x: hidden;
+  }
+
+  /* Right-size oversized editorial headings for narrow screens */
+  .page-hero h1 {
+    font-size: clamp(2.75rem, 11vw, 3.5rem);
+  }
+
+  .catalog h1 {
+    font-size: clamp(3.25rem, 14vw, 4.75rem);
+  }
+
+  .quote-band blockquote {
+    font-size: clamp(1.55rem, 6vw, 1.95rem);
+    line-height: 1.45;
+  }
+
+  /* Tighten vertical rhythm so sections don't feel stretched */
+  .section-pad {
+    padding-block: clamp(3.25rem, 9vw, 4rem);
+  }
+
+  .page-hero {
+    padding-block: clamp(3.5rem, 10vw, 5rem) clamp(2.5rem, 7vw, 3.5rem);
+  }
+
+  /* Full-width, easy-to-tap primary actions in the hero */
+  .hero__actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .hero__actions .button {
+    width: 100%;
+  }
+
+  /* Comfortable tap target (≈48px) for each catalog service row */
+  .catalog-service-list button {
+    padding: 0.95rem 0;
+    min-height: 3rem;
+  }
+
+  /* Grow the hit area of underline text links */
+  .text-link,
+  .catalog-book-link {
+    padding-top: 0.35rem;
+  }
+
+  /* Keep form controls at 16px so iOS never zooms in on focus */
+  .field input,
+  .field select,
+  .field textarea {
+    font-size: 16px;
+  }
+}
+
+/* ============================================================
+   Mobile performance — drop the most expensive continuous
+   effects on small screens (GPU-heavy blends & sheens)
+   ============================================================ */
+@media (max-width: 760px) {
+  .image-panel__sheen {
+    display: none;
+  }
+
+  .button::after {
+    display: none;
   }
 }
