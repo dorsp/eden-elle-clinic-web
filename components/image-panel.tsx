@@ -7,6 +7,7 @@ type ImagePanelProps = {
 export function ImagePanel({ label, className, tone = "clinic" }: ImagePanelProps) {
   return (
     <div className={["image-panel", className].filter(Boolean).join(" ")} data-tone={tone}>
+      <span className="image-panel__sheen" aria-hidden="true" />
       <div className="image-caption">
         <span className="micro-label">{label}</span>
       </div>
