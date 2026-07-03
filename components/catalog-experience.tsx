@@ -52,9 +52,13 @@ export function CatalogExperience({ categories, treatments }: CatalogExperienceP
         return;
       }
 
+      const softBlur = window.matchMedia("(max-width: 760px)").matches
+        ? "blur(0px)"
+        : "blur(8px)";
+
       gsap.fromTo(
         stageRef.current.children,
-        { autoAlpha: 0, filter: "blur(8px)", y: 26 },
+        { autoAlpha: 0, filter: softBlur, y: 26 },
         { autoAlpha: 1, duration: 0.75, ease: "power3.out", filter: "blur(0px)", stagger: 0.08, y: 0 }
       );
     },
