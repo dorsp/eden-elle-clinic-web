@@ -7,6 +7,9 @@ import { usePathname } from "next/navigation";
 
 gsap.registerPlugin(ScrollTrigger);
 
+// Elle's signature ease: quick, precise, no lingering drift — expo-out.
+const EASE_PRECISE = "cubic-bezier(0.16, 1, 0.3, 1)";
+
 export function MotionLayer() {
   const pathname = usePathname();
 
@@ -35,8 +38,8 @@ export function MotionLayer() {
         {
           autoAlpha: 1,
           clearProps: "transform",
-          duration: 0.85,
-          ease: "power3.out",
+          duration: 0.6,
+          ease: EASE_PRECISE,
           y: 0
         }
       );
@@ -45,7 +48,7 @@ export function MotionLayer() {
       gsap.fromTo(
         "main",
         { autoAlpha: 0.5, y: 14 },
-        { autoAlpha: 1, duration: 0.6, ease: "power2.out", y: 0, clearProps: "transform" }
+        { autoAlpha: 1, duration: 0.4, ease: EASE_PRECISE, y: 0, clearProps: "transform" }
       );
 
       // Section eyebrows: draw the champagne underline in on scroll
@@ -68,12 +71,12 @@ export function MotionLayer() {
           .join(" ");
         gsap.fromTo(
           quote.querySelectorAll(".word"),
-          { autoAlpha: 0, y: 16 },
+          { autoAlpha: 0, y: 12 },
           {
             autoAlpha: 1,
-            duration: 0.7,
-            ease: "power3.out",
-            stagger: 0.045,
+            duration: 0.45,
+            ease: EASE_PRECISE,
+            stagger: 0.028,
             y: 0,
             scrollTrigger: { once: true, start: "top 80%", trigger: quote }
           }
@@ -124,64 +127,62 @@ export function MotionLayer() {
       });
 
       if (pathname === "/") {
-        const hero = gsap.timeline({ defaults: { ease: "power3.out" } });
+        const hero = gsap.timeline({ defaults: { ease: EASE_PRECISE } });
 
         hero
           .fromTo(
             ".hero [data-hero-item]",
-            { autoAlpha: 0, filter: heroBlur, y: 28 },
-            { autoAlpha: 1, duration: 1.05, filter: "blur(0px)", stagger: 0.12, y: 0 }
+            { autoAlpha: 0, filter: heroBlur, y: 20 },
+            { autoAlpha: 1, duration: 0.7, filter: "blur(0px)", stagger: 0.08, y: 0 }
           )
           .fromTo(
             ".hero__image",
-            { autoAlpha: 0, clipPath: "inset(8% 0% 8% 0%)", scale: 1.04 },
+            { clipPath: "inset(0% 0% 100% 0%)" },
             {
-              autoAlpha: 1,
               clipPath: "inset(0% 0% 0% 0%)",
-              duration: 1.35,
-              scale: 1
+              duration: 0.9
             },
-            "-=0.7"
+            "-=0.45"
           );
       }
 
       if (pathname !== "/" && !pathname?.startsWith("/catalog")) {
         gsap.fromTo(
           ".page-hero > *",
-          { autoAlpha: 0, filter: heroBlur, y: 28 },
+          { autoAlpha: 0, filter: heroBlur, y: 20 },
           {
             autoAlpha: 1,
-            duration: 1,
-            ease: "power3.out",
+            duration: 0.65,
+            ease: EASE_PRECISE,
             filter: "blur(0px)",
-            stagger: 0.1,
+            stagger: 0.07,
             y: 0
           }
         );
       }
 
       if (pathname?.startsWith("/catalog")) {
-        const catalog = gsap.timeline({ defaults: { ease: "power3.out" } });
+        const catalog = gsap.timeline({ defaults: { ease: EASE_PRECISE } });
 
         catalog
-          .fromTo(".catalog__top", { autoAlpha: 0, y: -18 }, { autoAlpha: 1, duration: 0.85, y: 0 })
+          .fromTo(".catalog__top", { autoAlpha: 0, y: -18 }, { autoAlpha: 1, duration: 0.55, y: 0 })
           .fromTo(
             ".catalog__intro > *",
-            { autoAlpha: 0, filter: heroBlur, y: 32 },
-            { autoAlpha: 1, duration: 1.05, filter: "blur(0px)", stagger: 0.12, y: 0 },
-            "-=0.35"
+            { autoAlpha: 0, filter: heroBlur, y: 24 },
+            { autoAlpha: 1, duration: 0.7, filter: "blur(0px)", stagger: 0.08, y: 0 },
+            "-=0.3"
           )
           .fromTo(
             ".catalog-tile",
-            { autoAlpha: 0, clipPath: "inset(0% 0% 100% 0%)", y: 36 },
+            { autoAlpha: 0, clipPath: "inset(0% 0% 100% 0%)", y: 24 },
             {
               autoAlpha: 1,
               clipPath: "inset(0% 0% 0% 0%)",
-              duration: 1,
-              stagger: 0.08,
+              duration: 0.65,
+              stagger: 0.06,
               y: 0
             },
-            "-=0.55"
+            "-=0.35"
           );
       }
 
@@ -192,11 +193,11 @@ export function MotionLayer() {
         .forEach((element) => {
           gsap.fromTo(
             element,
-            { autoAlpha: 0, filter: softBlur, y: 38 },
+            { autoAlpha: 0, filter: softBlur, y: 24 },
             {
               autoAlpha: 1,
-              duration: 1,
-              ease: "power3.out",
+              duration: 0.6,
+              ease: EASE_PRECISE,
               filter: "blur(0px)",
               scrollTrigger: {
                 once: true,
@@ -215,17 +216,17 @@ export function MotionLayer() {
 
           gsap.fromTo(
             items,
-            { autoAlpha: 0, y: 34 },
+            { autoAlpha: 0, y: 22 },
             {
               autoAlpha: 1,
-              duration: 0.92,
-              ease: "power3.out",
+              duration: 0.55,
+              ease: EASE_PRECISE,
               scrollTrigger: {
                 once: true,
                 start: "top 82%",
                 trigger: group
               },
-              stagger: 0.09,
+              stagger: 0.06,
               y: 0
             }
           );

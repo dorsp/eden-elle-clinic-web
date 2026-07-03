@@ -11,7 +11,7 @@
   --line: #ddd6ca;
   --wash: #ebe6de;
   --deep-line: #3a352d;
-  --radius-card: 18px;
+  --radius-card: 24px;
   --page-x: clamp(1.25rem, 4vw, 4rem);
   --max-page: 1200px;
 }
@@ -248,10 +248,10 @@ select {
   padding: 0.95rem 2.3rem;
   text-transform: uppercase;
   transition:
-    background-color 180ms ease,
-    border-color 180ms ease,
-    color 180ms ease,
-    transform 180ms ease;
+    background-color 150ms ease,
+    border-color 150ms ease,
+    color 150ms ease,
+    transform 150ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .button:hover {
@@ -378,22 +378,67 @@ select {
 }
 
 .quote-band {
-  padding: clamp(4rem, 7vw, 4.75rem) var(--page-x);
-  text-align: center;
+  padding: clamp(4rem, 7vw, 5.5rem) var(--page-x);
+  position: relative;
+}
+
+.quote-band::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(
+    circle,
+    rgba(247, 244, 239, 0.05) 1px,
+    transparent 1px
+  );
+  background-size: 22px 22px;
+  pointer-events: none;
+}
+
+.quote-band__layout {
+  position: relative;
+  display: grid;
+  gap: clamp(2rem, 5vw, 3.5rem);
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 0.65fr);
+  align-items: center;
+  max-width: var(--max-page);
+  margin-inline: auto;
 }
 
 .quote-band blockquote {
   color: var(--wash);
   font-family: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
-  font-size: clamp(1.8rem, 3.6vw, 2.25rem);
+  font-size: clamp(1.8rem, 3.6vw, 2.4rem);
   font-style: italic;
   line-height: 1.5;
-  margin: 0 auto;
-  max-width: 52rem;
+  margin: 0;
+  text-align: left;
+}
+
+.quote-band__aside {
+  border-left: 1px solid rgba(160, 138, 95, 0.4);
+  padding-left: clamp(1.5rem, 3vw, 2.25rem);
+  text-align: left;
+}
+
+.quote-band__mark {
+  color: var(--champagne);
+  display: block;
+  font-family: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
+  font-size: 2.5rem;
+  line-height: 1;
+  margin-bottom: 1rem;
 }
 
 .quote-band p {
-  margin: 1.65rem 0 0;
+  margin: 0.9rem 0 0;
+}
+
+.quote-band__signature {
+  color: var(--stone);
+  font-family: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
+  font-size: 1.1rem;
+  font-style: italic;
 }
 
 .editorial-proof {
@@ -455,9 +500,9 @@ select {
   border-radius: var(--radius-card);
   overflow: hidden;
   transition:
-    border-color 220ms ease,
-    box-shadow 220ms ease,
-    transform 220ms ease;
+    border-color 180ms cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 180ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 180ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .treatment-card:hover {
@@ -599,12 +644,12 @@ select {
 
 .location-card {
   border: 1px solid var(--line);
-  border-radius: 20px;
+  border-radius: var(--radius-card);
   overflow: hidden;
   transition:
-    border-color 220ms ease,
-    box-shadow 220ms ease,
-    transform 220ms ease;
+    border-color 180ms cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 180ms cubic-bezier(0.16, 1, 0.3, 1),
+    transform 180ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .location-card:hover {
@@ -950,7 +995,7 @@ select {
 
 .field textarea {
   border: 1px solid var(--stone);
-  border-radius: 12px;
+  border-radius: 20px;
   min-height: 9rem;
   padding: 1rem;
   resize: vertical;
@@ -1433,7 +1478,7 @@ select {
     transparent
   );
   transform: skewX(-18deg);
-  transition: left 0.6s ease;
+  transition: left 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   pointer-events: none;
 }
 
@@ -1456,8 +1501,8 @@ select {
 .catalog-service-card__meta a svg,
 .text-link {
   transition:
-    transform 0.25s ease,
-    color 0.2s ease;
+    transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+    color 0.15s ease;
 }
 
 .button:hover svg,
@@ -1503,7 +1548,7 @@ select {
 /* Gentle image zoom on card hover */
 .treatment-card .image-panel,
 .location-card .image-panel {
-  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .treatment-card:hover .image-panel,
@@ -1528,7 +1573,7 @@ select {
   background: var(--champagne);
   transform: scaleX(0);
   transform-origin: left;
-  transition: transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .section-heading--center .micro-label::after {
@@ -1597,9 +1642,9 @@ select {
 /* Living, scroll-aware header */
 .site-header {
   transition:
-    transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
-    background-color 0.3s ease,
-    box-shadow 0.35s ease;
+    transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 0.2s ease,
+    box-shadow 0.25s ease;
 }
 
 .site-header[data-scrolled="true"] {
@@ -1667,9 +1712,9 @@ select {
   visibility: hidden;
   transform: translateY(-1.25rem);
   transition:
-    opacity 0.4s ease,
-    transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-    visibility 0.4s;
+    opacity 0.3s ease,
+    transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    visibility 0.3s;
 }
 
 .mobile-menu[data-open="true"] {
@@ -1686,8 +1731,8 @@ select {
   opacity: 0;
   transform: translateY(0.75rem);
   transition:
-    opacity 0.4s ease,
-    transform 0.4s ease;
+    opacity 0.3s ease,
+    transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .mobile-menu[data-open="true"] a {
@@ -1779,8 +1824,25 @@ select {
   .catalog__grid,
   .catalog-stage,
   .before-after-grid,
-  .catalog-service-stage {
+  .catalog-service-stage,
+  .quote-band__layout {
     grid-template-columns: 1fr;
+  }
+
+  .quote-band blockquote {
+    text-align: center;
+  }
+
+  .quote-band__aside {
+    border-left: 0;
+    border-top: 1px solid rgba(160, 138, 95, 0.4);
+    padding-left: 0;
+    padding-top: 1.5rem;
+    text-align: center;
+  }
+
+  .quote-band__mark {
+    text-align: center;
   }
 
   .catalog__top {

@@ -80,10 +80,18 @@ export default function Home() {
       <TrustMarquee />
 
       <section className="quote-band dark-band">
-        <blockquote>
-          "Cheer up, care more, and elevate your beauty, because beauty is power."
-        </blockquote>
-        <p className="micro-label">The Elle De Marrer Philosophy</p>
+        <div className="quote-band__layout">
+          <blockquote>
+            "Cheer up, care more, and elevate your beauty, because beauty is power."
+          </blockquote>
+          <div className="quote-band__aside">
+            <span className="quote-band__mark" aria-hidden="true">
+              &mdash;
+            </span>
+            <p className="micro-label">The Elle De Marrer Philosophy</p>
+            <p className="quote-band__signature">E. De Marrer</p>
+          </div>
+        </div>
       </section>
 
       <section className="editorial-proof section-pad">
